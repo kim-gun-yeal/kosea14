@@ -8,6 +8,7 @@ public class guest extends Person{
 		super.name = name;
 		super.age = age;
 		super.address = address;
+		super.status = status;
 		this.visit = visit;
 	}
 }

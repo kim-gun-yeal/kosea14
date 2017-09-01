@@ -8,5 +8,6 @@ public class Faculty extends Person{ // Faculty 클래스가 Person 클래스를 상속
 		super.name = name;
 		super.age = age;
 		super.address = address;
+		super.status = status;
 	}
 }

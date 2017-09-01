@@ -1,5 +1,4 @@
-package project2;
-
+package project3;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -25,14 +24,13 @@ public class MainDisplay implements ActionListener{
 
 	JFrame iFrame;
 	JPanel iPaneLbl, temp;
-	JButton byPerson, byBook,  Borrow, Return, extProgram;
+	JButton byPerson, byBook, Borrow, Return, extProgram;
 	JLabel iName;
 	
 	JTable bookTable, personTable;
 	String category[] = {"책이름", "저자", "대출자"};
-	String category2[] = {"회원이름", "나이", "대출책 갯수", "연락처"};
-	String category3[] = {"성인","미성년자"};
-
+	String category2[] = {"회원이름", "나이", "대출책 갯수", "주소", "연령대"};
+	String category3[] = {"10대미만", "10대", "20대이상"};
 	DefaultTableModel model, model2;
 	JScrollPane tbl_sp, tbl_sp2;
 	Person[] libPerson;
@@ -41,8 +39,7 @@ public class MainDisplay implements ActionListener{
 	int countBook;	
 	public MainDisplay(){		
 		libPerson = new Person[100];
-		libBook = new book[100];
-		
+		libBook = new book[100];		
 		countPerson = countBook = 0;
 		
 		iFrame=new JFrame("도서 데이터 관리 프로그램");
@@ -52,7 +49,7 @@ public class MainDisplay implements ActionListener{
 
 		iPaneLbl=new JPanel(null);
 		iPaneLbl.setBounds(10, 0, 530, 60);
-		iPaneLbl.setBackground(Color.blue);
+		iPaneLbl.setBackground(Color.black);
 		iName=new JLabel("도서 데이터 관리 프로그램");
 		iName.setBounds(135, 5, 500, 50);
 		iName.setForeground(Color.white);
@@ -65,7 +62,7 @@ public class MainDisplay implements ActionListener{
 		byPerson.addActionListener(this);
 		iFrame.add(byPerson);
 
-		byBook=new JButton("대여관리현황");
+		byBook=new JButton("대여목록");
 		byBook.setBounds(140, 140, 250, 80);
 		byBook.addActionListener(this);
 		iFrame.add(byBook);
@@ -97,8 +94,6 @@ public class MainDisplay implements ActionListener{
 		tbl_sp2.setBounds(805, 0, 440, 400);
 		iFrame.add(tbl_sp2);		
 		iFrame.setVisible(true);
-		
-	
 	}
 	private void load() {
 		try {
@@ -146,24 +141,19 @@ public class MainDisplay implements ActionListener{
 			String name = JOptionPane.showInputDialog("이름을 입력하세요");
 			int age = Integer.parseInt(JOptionPane.showInputDialog("나이를 입력하세요"));
 			String address = JOptionPane.showInputDialog("주소를 입력하세요");
-			int abc = Integer.parseInt(JOptionPane.showInputDialog("연락처를 입력하세요"));//
-			//int abc = JOptionPane.showOptionDialog(temp, "선택", "입력", 0, 0, null, category3, 0);
+			int abc = JOptionPane.showOptionDialog(temp, "선택하세요", "연령", 0, 0, null, category3, 0);
 			switch (abc) {
 			case 0:
-				libPerson[countPerson++] = new Tel(name, age, address);
+				libPerson[countPerson++] = new tenless(name, age, address);
 				refresh();
 				break;
 			case 1:
-				libPerson[countPerson++] = new Faculty(name, age, address);
+				libPerson[countPerson++] = new ten(name, age, address);
 				refresh();
 				break;
+			
 			case 2:
-				String visit = JOptionPane.showInputDialog("방문 목적을 입력하세요"); // guest 클래스만 존재
-				libPerson[countPerson++] = new guest(name, age, address, visit); // 테이블에 방문 목적은 출력 X
-				refresh();
-				break;
-			case 3:
-				libPerson[countPerson++] = new Staff(name, age, address);
+				libPerson[countPerson++] = new twentymore(name, age, address);
 				refresh();
 				break;
 			}
@@ -174,7 +164,7 @@ public class MainDisplay implements ActionListener{
 			libBook[countBook++] = new book(name, auth);
 			refresh();
 		}
-
+		
 		else if(iEvent.getSource()==Borrow){
 			int book = bookTable.getSelectedRow();
 			int person = personTable.getSelectedRow();
@@ -217,7 +207,6 @@ public class MainDisplay implements ActionListener{
 					bw.write(libPerson[i].getStatus()+"\r\n");
 					bw.write(libPerson[i].getNumofbook()+"\r\n");
 				}
-				
 				bw.flush();
 				osw.close();
 				fos.close();
@@ -265,10 +254,8 @@ public class MainDisplay implements ActionListener{
 		for(int i=0; i<countPerson; i++){
 			model2.addRow(libPerson[i].getall());
 		}
-		
 		bookTable.setModel(model);
 		personTable.setModel(model2);
-		
 		iFrame.invalidate();
 	}
 	public static void main(String[] args) {
