@@ -29,7 +29,7 @@ public class MainDisplay implements ActionListener{
 	
 	JTable bookTable, personTable;
 	String category[] = {"책이름", "저자", "대출자"};
-	String category2[] = {"회원이름", "나이", "대출책 갯수", "주소", "연령대"};
+	String category2[] = {"회원이름", "대출책 갯수", "나이", "주소", "연령대", "연락처"};
 	String category3[] = {"10대미만", "10대", "20대이상"};
 	DefaultTableModel model, model2;
 	JScrollPane tbl_sp, tbl_sp2;
@@ -44,7 +44,7 @@ public class MainDisplay implements ActionListener{
 		
 		iFrame=new JFrame("도서 데이터 관리 프로그램");
 		iFrame.setLayout(null);
-		iFrame.setBounds(40, 40, 1270, 380);
+		iFrame.setBounds(40, 40, 1050, 800);
 		iFrame.setResizable(false);
 
 		iPaneLbl=new JPanel(null);
@@ -62,7 +62,7 @@ public class MainDisplay implements ActionListener{
 		byPerson.addActionListener(this);
 		iFrame.add(byPerson);
 
-		byBook=new JButton("대여목록");
+		byBook=new JButton("책 검색하기");
 		byBook.setBounds(140, 140, 250, 80);
 		byBook.addActionListener(this);
 		iFrame.add(byBook);
@@ -85,13 +85,13 @@ public class MainDisplay implements ActionListener{
 		model = new DefaultTableModel(category,0);
 		bookTable = new JTable(model);		
 		tbl_sp = new JScrollPane(bookTable);
-		tbl_sp.setBounds(550, 0, 250, 400);
+		tbl_sp.setBounds(550, 0, 450, 330);
 		iFrame.add(tbl_sp);
 	
 		model2 = new DefaultTableModel(category2, 0);
 		personTable = new JTable(model2);
 		tbl_sp2 = new JScrollPane(personTable);
-		tbl_sp2.setBounds(805, 0, 440, 400);
+		tbl_sp2.setBounds(0, 350, 1000, 400);
 		iFrame.add(tbl_sp2);		
 		iFrame.setVisible(true);
 	}
@@ -123,6 +123,7 @@ public class MainDisplay implements ActionListener{
 						libPerson[countPerson].setAddress(br.readLine().trim());
 						libPerson[countPerson].setStatus(br.readLine().trim());
 						libPerson[countPerson++].setNumofbook(Integer.parseInt(br.readLine().trim()));
+						libPerson[countPerson].setTel(br.readLine().trim());
 						}
 					}
 				}
@@ -142,21 +143,23 @@ public class MainDisplay implements ActionListener{
 			int age = Integer.parseInt(JOptionPane.showInputDialog("나이를 입력하세요"));
 			String address = JOptionPane.showInputDialog("주소를 입력하세요");
 			int abc = JOptionPane.showOptionDialog(temp, "선택하세요", "연령", 0, 0, null, category3, 0);
+			String tel = JOptionPane.showInputDialog("연락처를 입력하세요");
 			switch (abc) {
 			case 0:
-				libPerson[countPerson++] = new tenless(name, age, address);
+				libPerson[countPerson++] = new tenless(name, age, address, tel);
 				refresh();
 				break;
 			case 1:
-				libPerson[countPerson++] = new ten(name, age, address);
+				libPerson[countPerson++] = new ten(name, age, address, tel);
 				refresh();
 				break;
 			
 			case 2:
-				libPerson[countPerson++] = new twentymore(name, age, address);
+				libPerson[countPerson++] = new twentymore(name, age, address, tel);
 				refresh();
 				break;
 			}
+			
 		}
 		else if(iEvent.getSource()==byBook) {
 			String name = JOptionPane.showInputDialog("책 제목을 입력하세요");
@@ -206,6 +209,7 @@ public class MainDisplay implements ActionListener{
 					bw.write(libPerson[i].getAddress()+"\r\n");
 					bw.write(libPerson[i].getStatus()+"\r\n");
 					bw.write(libPerson[i].getNumofbook()+"\r\n");
+					bw.write(libPerson[i].getTel()+"\r\n");
 				}
 				bw.flush();
 				osw.close();

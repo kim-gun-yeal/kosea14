@@ -8,6 +8,8 @@ public abstract class Person {
 	public int age;
 	public String address;
 	public int numofbook;
+	public String tel;
+	
 	public String getName() {
 		return name;
 	}
@@ -44,15 +46,23 @@ public abstract class Person {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public String getTel() {
+		return tel;
+	}
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
 	book[] bk;
 	String status;
 	public Vector<Object> getall() {
 		Vector<Object> myvector = new Vector<Object>();
 		myvector.add(name);
-		myvector.add(age);
 		myvector.add(numofbook);
+		myvector.add(age);
 		myvector.add(address);
 		myvector.add(status);
+		myvector.add(tel);
 		return myvector;
 	}
+	
 }
